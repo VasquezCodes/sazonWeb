@@ -23,7 +23,11 @@ type NativeButtonProps = ComponentPropsWithoutRef<"button"> & {
   href?: undefined;
 };
 
-type ButtonProps = LinkButtonProps | NativeButtonProps;
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+
+type ButtonProps =
+  | (Without<NativeButtonProps, LinkButtonProps> & LinkButtonProps)
+  | (Without<LinkButtonProps, NativeButtonProps> & NativeButtonProps);
 
 export function Button({ variant = "primary", className, ...props }: ButtonProps) {
   const classes = cn(baseClasses, variantClasses[variant], className);
