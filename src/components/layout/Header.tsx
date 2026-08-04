@@ -54,6 +54,7 @@ export function Header() {
           "grid overflow-hidden border-navy/10 bg-cream transition-[grid-template-rows] duration-300 ease-out md:hidden",
           isOpen ? "grid-rows-[1fr] border-t" : "grid-rows-[0fr] border-t-0"
         )}
+        inert={!isOpen}
       >
         <div className="min-h-0 overflow-hidden">
           <nav className="flex flex-col gap-4 px-6 py-4">
