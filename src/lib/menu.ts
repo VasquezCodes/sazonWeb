@@ -13,7 +13,7 @@ export const menuItems: MenuItem[] = [
     slug: "tequenos",
     name: "Tequeños",
     description:
-      "Golden fried breadsticks wrapped around melting white cheese — the street food classic.",
+      "Golden fried breadsticks wrapped around melting white cheese, the street food classic.",
     image: "/images/6.jpeg",
     badges: ["vegetarian"],
   },
