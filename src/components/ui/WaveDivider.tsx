@@ -23,6 +23,10 @@ export function WaveDivider({
         fill="#1c3f6e"
         opacity="0.9"
       />
+      <path
+        d="M0,100 C300,84 600,116 900,96 C1050,86 1150,108 1200,92 L1200,120 L0,120 Z"
+        fill="#d6432b"
+      />
     </svg>
   );
 }
