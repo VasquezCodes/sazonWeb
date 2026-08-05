@@ -1,4 +1,5 @@
 import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { Menu } from "@/components/sections/Menu";
 import { Locations } from "@/components/sections/Locations";
@@ -14,6 +15,7 @@ export default function Home() {
         <Locations />
         <Contact />
       </main>
+      <Footer />
     </>
   );
 }
