@@ -1343,6 +1343,81 @@ If Step 4 required no fixes, skip this commit (nothing to commit).
 
 ---
 
+### Task 14: Page-load entrance animation (GSAP)
+
+> Added mid-implementation per client request, after Task 9. Not part of the
+> original 13-task plan.
+
+**Goal:** A one-time, above-the-fold entrance choreography that plays on first
+paint (Header + Hero), using GSAP. Creative direction is intentionally open —
+text reveal, mask reveal, staggered element entrance are all reasonable
+directions. This is not a scroll-triggered/repeating effect; it plays once
+when the page first loads.
+
+**Files:**
+- Modify: `package.json` (add `gsap` dependency)
+- Modify or create: components under `src/components/sections/Hero.tsx` and/or
+  `src/components/layout/Header.tsx`, isolated into a client leaf component
+  (e.g. `src/components/motion/HeroIntro.tsx`) per the RSC interactivity-
+  isolation rule — don't blanket the whole tree in `"use client"` if only a
+  few elements actually animate.
+
+**Interfaces:**
+- Consumes: `gsap` (new dependency), the existing `Header`/`Hero` markup and
+  brand tokens/fonts.
+- Produces: no new public API — this is a pure presentation-layer addition on
+  top of already-approved components. The public contract of `Header` and
+  `Hero` (anchors, hrefs, `id="top"`, image src, alt text) must not change.
+
+**Before writing code:** load the `gsap-core` and `gsap-react` skills (and
+`gsap-performance` if using ScrollTrigger or anything beyond a simple
+timeline) via the Skill tool for correct, current GSAP API usage — do not
+rely on training-data memory of GSAP's API, it may be stale.
+
+**Hard constraints:**
+- Animate only `transform` and `opacity` (no layout-triggering properties).
+- Must respect `prefers-reduced-motion`: reduced-motion users get the final
+  state immediately, no animation, no delay before content/CTAs are usable.
+- Plays once on initial mount, does not replay on route re-navigation within
+  the same session in a jarring way, does not block or delay interactivity
+  (CTAs must be clickable immediately even if still animating in).
+- No layout shift: reserve space so nothing jumps once the animation starts.
+- Use `useGSAP` + `gsap.context()` with proper cleanup (per `gsap-react`),
+  isolated in a `"use client"` leaf.
+- Keep it restrained — one well-executed entrance moment, not a barrage of
+  simultaneous effects (per this project's existing frontend-design/taste-
+  skill discipline already applied to Hero/Menu).
+
+- [ ] **Step 1: Install GSAP**
+
+```bash
+npm install gsap
+```
+
+- [ ] **Step 2: Design and implement the entrance choreography**
+
+Creative direction is open (text reveal, mask reveal, staggered fade/slide,
+etc.) — implementer's call, informed by the `gsap-core`/`gsap-react` skills
+and the hard constraints above.
+
+- [ ] **Step 3: Verify**
+
+Run: `npx tsc --noEmit` — expect no output, exit code 0.
+Run: `npm run build` — expect `Compiled successfully`.
+Manually verify in a browser (or via pixelshot) that: the animation plays on
+load, CTAs are clickable during/immediately after, and with
+`prefers-reduced-motion: reduce` simulated (browser devtools → Rendering →
+Emulate CSS media feature), content appears instantly with no animation.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add package.json package-lock.json <changed component files>
+git commit -m "Sumar animacion de entrada con GSAP al cargar la pagina"
+```
+
+---
+
 ## Self-review notes
 
 - **Spec coverage:** every section in the design spec (Header, Hero, Menú, Dónde
