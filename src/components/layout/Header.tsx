@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+
+gsap.registerPlugin(useGSAP);
 
 const navLinks = [
   { href: "#menu", label: "Menu" },
@@ -14,10 +18,45 @@ const navLinks = [
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      // Only animate when the user has no preference against motion. If
+      // "prefers-reduced-motion: reduce" is set, this callback never runs,
+      // so the header simply keeps the final state it already has from SSR
+      // (no animation, no delay).
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const items = rowRef.current ? gsap.utils.toArray<HTMLElement>(rowRef.current.children) : [];
+
+        // The logo link carries its own CSS hover transition
+        // (transition-transform, for the existing hover-lift polish).
+        // Switch it off for the entrance so it doesn't fight GSAP's own
+        // easing on the same property; `clearProps` restores it after.
+        const tl = gsap.timeline({ defaults: { ease: "power2.out", immediateRender: true } });
+        tl.set(items, { transitionProperty: "none" }).from(items, {
+          y: -10,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          immediateRender: true,
+          clearProps: "all",
+        });
+
+        return () => tl.kill();
+      });
+
+      return () => mm.revert();
+    },
+    { scope: headerRef }
+  );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-navy/10 bg-cream/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+    <header ref={headerRef} className="sticky top-0 z-50 border-b border-navy/10 bg-cream/95 backdrop-blur">
+      <div ref={rowRef} className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
         <a href="#top" className="shrink-0 transition-transform duration-200 ease-out hover:-translate-y-0.5">
           <Wordmark className="origin-left scale-75" />
         </a>
