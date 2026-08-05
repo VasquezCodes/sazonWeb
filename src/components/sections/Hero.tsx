@@ -6,18 +6,18 @@ import { WaveDivider } from "@/components/ui/WaveDivider";
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden bg-navy">
-      <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
-        <div className="text-center md:text-left">
-          <Wordmark tone="white" className="mx-auto mb-6 md:mx-0" />
-          <h1 className="font-heading text-4xl font-extrabold leading-tight text-white sm:text-5xl md:text-4xl">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:py-24">
+        <div className="text-center lg:text-left">
+          <Wordmark tone="white" className="mx-auto mb-6 lg:mx-0" />
+          <h1 className="font-heading text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-4xl">
             Street food,
             <span className="text-gold"> seasoned with sazón.</span>
           </h1>
-          <p className="mx-auto mt-5 max-w-md text-lg text-white/80 md:mx-0">
+          <p className="mx-auto mt-5 max-w-md text-lg text-white/80 lg:mx-0">
             Arepas, tequeños and empanadas made fresh across Australia, from
             our truck window to your next event.
           </p>
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center md:justify-start">
+          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
             <Button href="#menu" variant="primary" className="transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
               See the Menu
             </Button>
@@ -36,7 +36,7 @@ export function Hero() {
             src="/images/2.jpeg"
             alt="Sazón team handing over a fresh order from the truck window"
             fill
-            sizes="(min-width: 768px) 400px, 90vw"
+            sizes="(min-width: 1024px) 400px, 90vw"
             className="object-cover"
             priority
           />
