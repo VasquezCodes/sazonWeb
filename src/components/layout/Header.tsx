@@ -13,7 +13,7 @@ gsap.registerPlugin(useGSAP);
 const navLinks = [
   { href: "#menu", label: "Menu" },
   { href: "#locations", label: "Find Us" },
-  { href: "#contact", label: "Book Us" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export function Header() {
