@@ -25,7 +25,7 @@ const inputClasses =
 function RequiredMark() {
   return (
     <>
-      <span aria-hidden="true" className="ml-0.5 text-red">
+      <span aria-hidden="true" className="ml-0.5 text-navy">
         *
       </span>
       <span className="sr-only"> (required)</span>
@@ -77,7 +77,7 @@ export function Contact() {
 
       <form onSubmit={handleSubmit} className="mt-10 space-y-5">
         <p className="text-sm text-navy/60">
-          Fields marked <span aria-hidden="true" className="text-red">*</span> are required.
+          Fields marked <span className="text-navy">*</span> are required.
         </p>
 
         <div className="grid gap-5 sm:grid-cols-2">
