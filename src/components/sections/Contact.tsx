@@ -55,8 +55,8 @@ export function Contact() {
             Thanks, {form.name.split(" ")[0] || "there"}!
           </h2>
           <p className="mt-4 text-navy/70">
-            We&apos;ve got your request for {form.eventType || "your event"}.
-            We&apos;ll be in touch soon to lock in the details.
+            We&apos;ve got your message and we&apos;ll get back to you as soon
+            as we can.
           </p>
         </div>
       </section>
@@ -67,11 +67,10 @@ export function Contact() {
     <section id="contact" className="mx-auto max-w-2xl px-6 py-20 sm:py-24">
       <div className="text-center">
         <h2 className="font-heading text-3xl font-extrabold text-navy sm:text-4xl">
-          Book Us for Your Event
+          Get in touch
         </h2>
         <p className="mt-3 text-navy/70">
-          Tell us a bit about your event and we&apos;ll get back to you with
-          availability and pricing.
+          Tell us what you have in mind and we&apos;ll get back to you.
         </p>
       </div>
 
@@ -112,14 +111,13 @@ export function Contact() {
           </div>
           <div>
             <label htmlFor="eventType" className="text-sm font-semibold text-navy">
-              Event type
-              <RequiredMark />
+              Event type{" "}
+              <span className="font-normal text-navy/50">(optional)</span>
             </label>
             <input
               id="eventType"
               name="eventType"
               placeholder="Wedding, market, office party..."
-              required
               value={form.eventType}
               onChange={handleChange}
               className={inputClasses}
@@ -127,14 +125,13 @@ export function Contact() {
           </div>
           <div>
             <label htmlFor="eventDate" className="text-sm font-semibold text-navy">
-              Event date
-              <RequiredMark />
+              Event date{" "}
+              <span className="font-normal text-navy/50">(optional)</span>
             </label>
             <input
               id="eventDate"
               name="eventDate"
               type="date"
-              required
               value={form.eventDate}
               onChange={handleChange}
               className={inputClasses}
@@ -158,7 +155,7 @@ export function Contact() {
         </div>
 
         <Button type="submit" variant="primary" className="w-full sm:w-auto">
-          Send Request
+          Send message
         </Button>
       </form>
     </section>

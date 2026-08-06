@@ -22,7 +22,7 @@ const kaushanScript = Kaushan_Script({
 export const metadata: Metadata = {
   title: "Sazón: Venezuelan Street Food",
   description:
-    "Venezuelan street food in Australia. Find our next market or truck stop, or book us for your event.",
+    "Venezuelan street food in Australia. Find our next market or truck stop, or send us a message.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

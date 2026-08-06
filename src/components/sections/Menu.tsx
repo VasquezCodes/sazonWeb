@@ -10,7 +10,7 @@ export function Menu() {
           What&apos;s Cooking
         </h2>
         <p className="mt-3 text-navy/70">
-          Prices vary by event. Ask us on the day or when you book us.
+          Prices vary by event. Ask us on the day or send us a message.
         </p>
       </div>
 
@@ -20,12 +20,14 @@ export function Menu() {
             key={item.slug}
             className="group flex flex-col overflow-hidden rounded-3xl bg-cream-soft shadow-md shadow-navy/10 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-navy/15"
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden">
+            {/* Square, because the dish photos are top-down plate shots: a
+                landscape crop cuts the near and far edges off every plate. */}
+            <div className="relative aspect-square w-full overflow-hidden">
               <Image
                 src={item.image}
-                alt={item.name}
+                alt={item.imageAlt}
                 fill
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 264px, (min-width: 640px) 50vw, 100vw"
                 className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
               />
             </div>

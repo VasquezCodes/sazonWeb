@@ -10,10 +10,11 @@ import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(useGSAP);
 
+// No "Contact" entry: the CTA beside these links already points at #contact,
+// and two controls for one destination sitting next to each other is noise.
 const navLinks = [
   { href: "#menu", label: "Menu" },
   { href: "#locations", label: "Find Us" },
-  { href: "#contact", label: "Contact" },
 ];
 
 export function Header() {
@@ -73,7 +74,7 @@ export function Header() {
             </a>
           ))}
           <Button href="#contact" variant="primary">
-            Book Us
+            Get in touch
           </Button>
         </nav>
 
@@ -108,7 +109,7 @@ export function Header() {
               </a>
             ))}
             <Button href="#contact" variant="primary" onClick={() => setIsOpen(false)} className="mt-1 w-full">
-              Book Us
+              Get in touch
             </Button>
           </nav>
         </div>

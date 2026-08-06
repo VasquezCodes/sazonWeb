@@ -51,7 +51,7 @@ export function Locations() {
           </ul>
 
           <Button href="#contact" variant="primary" className="mt-8">
-            Book an Event
+            Get in touch
           </Button>
         </div>
       </div>

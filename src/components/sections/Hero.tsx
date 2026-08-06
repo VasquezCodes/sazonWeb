@@ -5,7 +5,6 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Button } from "@/components/ui/Button";
-import { PolkaBand } from "@/components/ui/PolkaBand";
 import { WaveDivider } from "@/components/ui/WaveDivider";
 
 gsap.registerPlugin(useGSAP);
@@ -16,83 +15,87 @@ export function Hero() {
   const line2Ref = useRef<HTMLSpanElement>(null);
   const subtextRef = useRef<HTMLParagraphElement>(null);
   const ctaGroupRef = useRef<HTMLDivElement>(null);
-  const imageWrapRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const polkaRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const arepaEnterRef = useRef<HTMLDivElement>(null);
+  const arepaFloatRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
 
-      // Only choreograph the entrance when the user has no preference
-      // against motion. When "prefers-reduced-motion: reduce" is set, this
-      // callback never runs at all, so every element simply keeps the final
-      // state it already has on first paint (server-rendered, no animation,
-      // no delay).
+      // Only choreograph when the user has no preference against motion. Under
+      // "prefers-reduced-motion: reduce" this callback never runs, so every
+      // element keeps the final state it already has from SSR: no animation,
+      // no delay, nothing hidden.
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const ctas = ctaGroupRef.current
           ? gsap.utils.toArray<HTMLElement>(ctaGroupRef.current.children)
           : [];
 
         // `immediateRender: true` on every step (not just the default for the
-        // first) matters here: without it, GSAP defers applying a nested
-        // tween's "from" state until the playhead reaches its position, so
-        // later elements (subtext, CTAs, polka) would render in their
-        // natural/final DOM state for a moment, then abruptly snap invisible
-        // right as their turn starts before fading back in. Forcing it keeps
-        // every element hidden from mount so each one only ever fades *in*.
-        const tl = gsap.timeline({ defaults: { ease: "power3.out", immediateRender: true } });
+        // first) matters here: without it GSAP defers a nested tween's "from"
+        // state until the playhead reaches its position, so later elements
+        // would paint in their natural state, snap invisible when their turn
+        // starts, then fade back in. Forcing it keeps everything hidden from
+        // mount so each element only ever fades *in*.
+        const tl = gsap.timeline({
+          defaults: { ease: "power3.out", immediateRender: true },
+        });
 
-        // The photo and the CTAs carry their own CSS hover transitions
-        // (transition-transform / transition-all, for the existing
-        // hover-lift and hover-swap polish). Left alone, the browser would
-        // treat GSAP's inline style writes as just another style change to
-        // ease over that same duration, fighting GSAP's own easing and
-        // distorting the timing. `.set(..., { transitionProperty: "none" })`
-        // switches those CSS transitions off for the entrance; each
-        // tween's `clearProps` removes the override afterwards so the
-        // original hover transitions resume normally.
-        tl.from(line1Ref.current, { yPercent: 115, duration: 0.7, immediateRender: true, clearProps: "transform" }, 0)
-          .from(line2Ref.current, { yPercent: 115, duration: 0.7, immediateRender: true, clearProps: "transform" }, 0.12)
-          // Photo: rises in with its frame while the image itself settles
-          // out of a gentle zoom, staying contained by the rounded frame's
-          // overflow-hidden edge (the same "mask" idea as the headline).
-          .from(imageWrapRef.current, { y: 24, opacity: 0, duration: 0.7, immediateRender: true, clearProps: "all" }, 0.18)
-          .set(imageRef.current, { transitionProperty: "none" }, 0.18)
-          // NOTE: next/image's `fill` mode relies on its own inline styles
-          // (position/width/height/inset) to size the <img>. clearProps
-          // must only remove the two inline properties GSAP itself added
-          // here (scale's transform, and the transitionProperty override
-          // above) — clearing "all" would strip Next's fill styles too and
-          // collapse the image to its intrinsic size.
-          .from(imageRef.current, {
-            scale: 1.12,
-            duration: 0.9,
-            immediateRender: true,
-            clearProps: "transform,transitionProperty",
-          }, 0.18)
-          .from(subtextRef.current, { y: 18, opacity: 0, duration: 0.6, immediateRender: true, clearProps: "all" }, 0.45)
-          .set(ctas, { transitionProperty: "none" }, 0.6)
-          .from(ctas, { y: 14, opacity: 0, duration: 0.5, stagger: 0.09, immediateRender: true, clearProps: "all" }, 0.6)
-          // Polka accent: a single restrained "pop" that punctuates the
-          // reveal once the photo has settled, using its existing tilt
-          // (-rotate-6) as the resting rotation.
+        // The CTAs carry their own CSS transitions for hover polish. Left
+        // alone, the browser eases over GSAP's inline style writes too and
+        // fights its easing, so switch them off for the entrance; `clearProps`
+        // restores the hover behaviour afterwards.
+        tl.from(line1Ref.current, { yPercent: 115, duration: 0.7, clearProps: "transform" }, 0)
+          .from(line2Ref.current, { yPercent: 115, duration: 0.7, clearProps: "transform" }, 0.12)
+          // The ring opens first so the arepa has a stage to land on.
           .from(
-            polkaRef.current,
+            ringRef.current,
+            { scale: 0.72, opacity: 0, duration: 0.8, clearProps: "all" },
+            0.15
+          )
+          .from(glowRef.current, { opacity: 0, duration: 1.1, clearProps: "all" }, 0.2)
+          // The arepa arrives last and largest: it rises past the ring's edge
+          // and settles out of a small overshoot, which is what reads as
+          // weight. Only the entrance wrapper is touched here so the ambient
+          // float below can own its own transform on a separate element.
+          .from(
+            arepaEnterRef.current,
             {
-              scale: 0,
-              rotation: "-=26",
+              y: 64,
+              scale: 0.9,
               opacity: 0,
-              duration: 0.55,
-              ease: "back.out(1.6)",
-              immediateRender: true,
+              duration: 1,
+              ease: "power3.out",
               clearProps: "all",
             },
-            0.55
+            0.28
+          )
+          .from(subtextRef.current, { y: 18, opacity: 0, duration: 0.6, clearProps: "all" }, 0.5)
+          .set(ctas, { transitionProperty: "none" }, 0.62)
+          .from(
+            ctas,
+            { y: 14, opacity: 0, duration: 0.5, stagger: 0.09, clearProps: "all" },
+            0.62
           );
+
+        // Ambient float. This is the whole point of a cutout with no ground
+        // under it, so it runs on its own element and its own transform,
+        // nested inside the entrance wrapper to keep the two from overwriting
+        // each other's `y`.
+        const float = gsap.to(arepaFloatRef.current, {
+          y: -14,
+          duration: 3.2,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: 1.2,
+        });
 
         return () => {
           tl.kill();
+          float.kill();
         };
       });
 
@@ -102,64 +105,92 @@ export function Hero() {
   );
 
   return (
-    <section ref={sectionRef} id="top" className="relative overflow-hidden bg-navy">
-      <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-14 lg:grid-cols-2 lg:py-20">
-        <div className="text-center lg:text-left">
-          <h1 className="font-heading text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-4xl">
-            <span className="block overflow-hidden py-1">
+    <section ref={sectionRef} id="top" className="relative isolate overflow-hidden bg-navy">
+      {/* Warm pool of light under the food, cool falloff at the edges, so the
+          cutout sits in a lit space instead of on a flat block of navy. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_60%_at_72%_45%,rgba(240,180,41,0.16),transparent_60%),radial-gradient(90%_90%_at_20%_10%,rgba(18,44,80,0),rgba(18,44,80,0.85))]"
+      />
+
+      <div className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-6 px-6 pt-10 pb-20 lg:grid-cols-12 lg:gap-8 lg:pt-14 lg:pb-10">
+        <div className="order-2 text-center lg:order-1 lg:col-span-7 lg:text-left">
+          <h1 className="font-heading text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
+            <span className="block overflow-hidden pb-1">
               <span ref={line1Ref} className="inline-block">
                 Street food,
               </span>
             </span>
-            <span className="block overflow-hidden py-1">
-              <span ref={line2Ref} className="inline-block text-gold">
-                seasoned with sazón.
+            <span className="block overflow-hidden pb-2">
+              <span ref={line2Ref} className="inline-block">
+                seasoned with{" "}
+                {/* The brand's own script face, on the brand's own name. Not a
+                    decorative family swap: this is the wordmark, quoted. */}
+                <span className="font-script text-gold">sazón</span>.
               </span>
             </span>
           </h1>
-          <p ref={subtextRef} className="mx-auto mt-5 max-w-md text-lg text-white/80 lg:mx-0">
-            Arepas, tequeños and empanadas made fresh across Australia, from
-            our truck window to your next event.
+
+          <p ref={subtextRef} className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-white/75 lg:mx-0">
+            Arepas, tequeños and empanadas made fresh across Australia, from our
+            truck window to your next event.
           </p>
+
           <div
             ref={ctaGroupRef}
             className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
           >
-            <Button href="#menu" variant="primary" className="transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
-              See the Menu
-            </Button>
             <Button
               href="#contact"
-              variant="secondary"
-              className="border-white text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-navy active:translate-y-0"
+              variant="primary"
+              className="w-full transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
             >
-              Book an Event
+              Get in touch
+            </Button>
+            <Button
+              href="#menu"
+              variant="secondary"
+              className="w-full border-white text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-navy active:translate-y-0 sm:w-auto"
+            >
+              See the Menu
             </Button>
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md lg:max-w-lg">
-          <PolkaBand
-            ref={polkaRef}
-            className="absolute -bottom-5 -left-5 h-32 w-32 -rotate-6 rounded-4xl shadow-lg lg:h-40 lg:w-40"
-          />
-          <div
-            ref={imageWrapRef}
-            className="group relative aspect-square w-full rotate-1 overflow-hidden rounded-[2.5rem] border-4 border-gold/60 shadow-2xl"
-          >
-            <Image
-              ref={imageRef}
-              src="/images/2.jpeg"
-              alt="Sazón team handing over a fresh order from the truck window"
-              fill
-              sizes="(min-width: 1024px) 480px, 90vw"
-              className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-              priority
+        {/* The food column deliberately overflows its track on both sides so
+            the arepa reads as sitting in front of the layout rather than
+            inside a cell. */}
+        <div className="relative order-1 lg:order-2 lg:col-span-5">
+          {/* Height-driven rather than aspect-driven: the ring is a true circle
+              sized off this box's height, and the arepa is free to overhang it
+              on both sides without stretching the hero taller. */}
+          <div className="relative mx-auto h-72.5 w-full max-w-85 sm:h-95 sm:max-w-107.5 lg:h-110 lg:max-w-none lg:-mr-12">
+            <div
+              ref={ringRef}
+              className="absolute left-[54%] top-[40%] aspect-square h-[84%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-gold/75 sm:border-[6px]"
             />
+            <div
+              ref={glowRef}
+              className="absolute left-[54%] top-[40%] aspect-square h-[84%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(240,180,41,0.24),transparent_70%)] blur-xl"
+            />
+
+            <div ref={arepaEnterRef} className="absolute inset-0">
+              <div ref={arepaFloatRef} className="relative h-full w-full">
+                <Image
+                  src="/images/hero-arepa.webp"
+                  alt="Shredded beef arepa topped with cheddar, in a Sazón wrap"
+                  fill
+                  sizes="(min-width: 1024px) 530px, (min-width: 640px) 430px, 340px"
+                  className="object-contain filter-[drop-shadow(0_18px_24px_rgba(10,26,48,0.55))_drop-shadow(0_44px_70px_rgba(10,26,48,0.45))]"
+                  priority
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <WaveDivider className="block h-12 w-full" />
+
+      <WaveDivider className="absolute inset-x-0 bottom-0 z-0 block h-12 w-full" />
     </section>
   );
 }
