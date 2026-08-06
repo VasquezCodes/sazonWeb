@@ -25,7 +25,7 @@ export function WaveDivider({
       />
       <path
         d="M0,100 C300,84 600,116 900,96 C1050,86 1150,108 1200,92 L1200,120 L0,120 Z"
-        fill="#d6432b"
+        fill="#c33a24"
       />
     </svg>
   );

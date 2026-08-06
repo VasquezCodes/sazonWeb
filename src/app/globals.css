@@ -6,7 +6,8 @@
   --color-navy: #1c3f6e;
   --color-navy-dark: #122c50;
   --color-gold: #f0b429;
-  --color-red: #d6432b;
+  /* Darkened from #d6432b so white button text clears WCAG AA (4.47:1 -> 5.3:1). */
+  --color-red: #c33a24;
   --font-sans: var(--font-inter);
   --font-heading: var(--font-poppins);
   --font-script: var(--font-kaushan);
