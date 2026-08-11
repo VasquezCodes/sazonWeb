@@ -81,7 +81,12 @@ export function Header() {
         className="relative mx-auto flex h-(--header-h) max-w-(--shell) items-center justify-between px-6"
       >
         <a href="#top" className="shrink-0 transition-transform duration-200 ease-out hover:-translate-y-0.5">
-          <Wordmark className="origin-left scale-75" />
+          {/* Sin reducir. Estaba a `scale-75` de cuando el wordmark era solo
+              texto; ahora que lleva el subrayado y los destellos, encogerlo
+              dejaba los dos trazos demasiado finos para leerse sobre la crema.
+              La fila creció con él, y como el hero se mide restando
+              `--header-h`, el primer pantallazo se ajusta solo. */}
+          <Wordmark />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">

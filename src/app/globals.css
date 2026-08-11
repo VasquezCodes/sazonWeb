@@ -52,8 +52,12 @@
   /* The header row is pinned to this, and the hero subtracts it from the
      viewport, which is what makes the hero fill exactly the first screen.
      Locking the row height (rather than letting padding decide it) is what
-     keeps those two in agreement. */
-  --header-h: 4.75rem;
+     keeps those two in agreement.
+
+     5.5rem is set by the wordmark, not by the nav links: the sparks reach
+     about 12px above the script's own box, so a shorter row clipped them
+     against the top edge once the logo stopped being scaled down. */
+  --header-h: 5.5rem;
 }
 
 @media (min-width: 1440px) {

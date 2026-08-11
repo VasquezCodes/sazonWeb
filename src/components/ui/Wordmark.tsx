@@ -64,11 +64,14 @@ export function Wordmark({
 }) {
   return (
     <span className={cn("inline-flex flex-col leading-none", className)}>
-      {/* El relleno inferior le abre sitio al subrayado. Sin el, el trazo se
-          come el aire que separa el nombre de la bajada. */}
+      {/* Los dos rellenos meten al subrayado y a los destellos dentro de la
+          caja de maquetado. Sin ellos los trazos sobresalen sin ocupar sitio,
+          y cualquier contenedor que centre el logo lo deja optimamente alto:
+          en el header quedaban a cuatro pixeles del borde superior y a
+          dieciseis del inferior. */}
       <span
         className={cn(
-          "font-script text-4xl pb-[0.16em]",
+          "font-script text-4xl pt-[0.34em] pb-[0.16em]",
           tone === "ink" ? "text-ink" : "text-white"
         )}
       >
