@@ -56,8 +56,30 @@ export function Header() {
   );
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 border-b border-navy/10 bg-cream/95 backdrop-blur">
-      <div ref={rowRef} className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+    // No bottom border, and `cream-lite` rather than a translucent `cream`:
+    // those two together are what make the nav read as the top of the hero
+    // instead of a strip stuck above it. `cream-lite` is the exact colour the
+    // hero's gradient starts at, so there is no edge where they meet, and the
+    // border that used to draw one is gone.
+    //
+    // Opaque, not `/95` + backdrop-blur: the blur only ever showed as a faint
+    // seam once there was no border to hide it, and the header still has to be
+    // readable over the teal band and the photos it scrolls across.
+    <header ref={headerRef} className="sticky top-0 z-50 bg-cream-lite">
+      {/* The same grain the hero runs. Colour alone was not enough for the two
+          to read as one surface: the hero multiplies this texture over its
+          cream and the bare header did not, which left the nav a shade cleaner
+          than the ground directly under it. `z-50` above already makes the
+          header its own stacking context, so the multiply stays inside it. */}
+      <div aria-hidden="true" className="paper-grain pointer-events-none absolute inset-0" />
+
+      {/* Fixed height instead of vertical padding: the hero sizes itself to
+          `100svh - var(--header-h)`, so the row has to actually be that tall or
+          the first screen ends up over- or under-shooting by a few pixels. */}
+      <div
+        ref={rowRef}
+        className="relative mx-auto flex h-(--header-h) max-w-(--shell) items-center justify-between px-6"
+      >
         <a href="#top" className="shrink-0 transition-transform duration-200 ease-out hover:-translate-y-0.5">
           <Wordmark className="origin-left scale-75" />
         </a>
@@ -67,13 +89,16 @@ export function Header() {
             <a
               key={link.href}
               href={link.href}
-              className="group relative py-1 font-heading text-sm font-bold uppercase tracking-wide text-navy transition-colors duration-200 hover:text-red focus-visible:outline-none focus-visible:text-red"
+              className="group relative py-1 font-heading text-base font-bold uppercase tracking-wide text-ink transition-colors duration-200 hover:text-red focus-visible:outline-none focus-visible:text-red"
             >
               {link.label}
               <span className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-red transition-transform duration-200 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100" />
             </a>
           ))}
-          <Button href="#contact" variant="primary">
+          {/* Bumped with the links beside it: the pill's label has to stay the
+              same size as the nav items or it reads as a smaller, weaker
+              control sitting next to them. */}
+          <Button href="#contact" variant="primary" className="text-base">
             Get in touch
           </Button>
         </nav>
@@ -81,7 +106,7 @@ export function Header() {
         <button
           type="button"
           onClick={() => setIsOpen((open) => !open)}
-          className="rounded-full p-1.5 text-navy transition-colors duration-200 hover:bg-navy/5 hover:text-red focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red/50 md:hidden"
+          className="rounded-full p-1.5 text-ink transition-colors duration-200 hover:bg-ink/5 hover:text-red focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red/50 md:hidden"
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
         >
@@ -91,7 +116,10 @@ export function Header() {
 
       <div
         className={cn(
-          "grid overflow-hidden border-navy/10 bg-cream transition-[grid-template-rows] duration-300 ease-out md:hidden",
+          // No background of its own: it sits inside the header, so the
+          // header's cream *and* its grain show through instead of the panel
+          // laying a clean patch of colour over the texture.
+          "relative grid overflow-hidden border-ink/10 transition-[grid-template-rows] duration-300 ease-out md:hidden",
           isOpen ? "grid-rows-[1fr] border-t" : "grid-rows-[0fr] border-t-0"
         )}
         inert={!isOpen}
@@ -103,12 +131,12 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="font-heading text-sm font-bold uppercase tracking-wide text-navy transition-colors duration-200 hover:text-red"
+                className="font-heading text-base font-bold uppercase tracking-wide text-ink transition-colors duration-200 hover:text-red"
               >
                 {link.label}
               </a>
             ))}
-            <Button href="#contact" variant="primary" onClick={() => setIsOpen(false)} className="mt-1 w-full">
+            <Button href="#contact" variant="primary" onClick={() => setIsOpen(false)} className="mt-1 w-full text-base">
               Get in touch
             </Button>
           </nav>

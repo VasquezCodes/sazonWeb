@@ -5,9 +5,17 @@ import { cn } from "@/lib/utils";
 type ButtonVariant = "primary" | "secondary";
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-red text-white hover:bg-red/90",
+  // One action colour, which is the rule 2a is built on: red owns every button,
+  // in the nav and in the hero both. An earlier pass gave the hero its own teal
+  // variant to avoid two red pills stacked near each other; 2a resolves that the
+  // other way — the teal stops being an action colour at all and stays
+  // structural, and the repetition becomes the point rather than a clash.
+  //
+  // The tinted drop shadow is what separates the pill from cream without an
+  // outline. It is sized for the nav; the hero's larger pill scales it up.
+  primary: "bg-red text-white shadow-[0_6px_16px_rgba(192,61,39,0.28)] hover:bg-red/90",
   secondary:
-    "bg-transparent text-navy border-2 border-navy hover:bg-navy hover:text-white",
+    "bg-transparent text-ink border-2 border-ink hover:bg-ink hover:text-white",
 };
 
 const baseClasses =

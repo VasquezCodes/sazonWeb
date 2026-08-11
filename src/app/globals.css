@@ -1,16 +1,71 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: #f3e4c4;
-  --color-cream-soft: #faf1dd;
-  --color-navy: #1c3f6e;
-  --color-navy-dark: #122c50;
-  --color-gold: #f0b429;
-  /* Darkened from #d6432b so white button text clears WCAG AA (4.47:1 -> 5.3:1). */
-  --color-red: #c33a24;
+  /* Values come from direction 2a, "Crema al frente, afinado", of the hero
+     colorimetry study. Cream is the page's *ground* — it runs through the nav,
+     the hero and the sections below — and the brand's blue is an accent.
+     Earlier directions made the blue the hero background, which forces every
+     other colour to survive on top of a saturated mid tone: gold and red both
+     disappear there, and the ink has to go nearly black just to hold body copy.
+     On cream nothing has to be sacrificed.
+
+     The three creams are one gradient, not three surfaces: light at the hero's
+     top-left, toasted at its bottom-right. `cream-lite` is also the header's
+     ground, which is what lets the nav and the hero read as a single surface
+     with no seam between them.
+
+     Two rules 2a is built on, worth keeping if these values are ever retuned:
+     one action colour only — `red` owns the nav CTA and the hero CTA, and the
+     teal never becomes a button — and `celeste` stays structural (the wave, the
+     band under the hero, the disc behind the food).
+
+     Contrast on cream: ink 10.9:1, ink/70 (body) 4.8:1, red 4.1:1 — display
+     type only. On celeste: white 7.3:1. On red: white 5.3:1. */
+  --color-cream-lite: #fef8ec;
+  --color-cream-soft: #f8ecd4;
+  --color-cream: #f1dfb8;
+  --color-ink: #142e36;
+  --color-celeste: #125f6c;
+  --color-celeste-lite: #1c7e8d;
+  --color-gold: #e2a04a;
+  --color-red: #c03d27;
   --font-sans: var(--font-inter);
   --font-heading: var(--font-poppins);
   --font-script: var(--font-kaushan);
+}
+
+:root {
+  /* One shell width for the whole page — nav, hero, menu, locations, footer all
+     read from this, so the wordmark in the nav stays on the same left edge as
+     the content of every section under it.
+
+     It steps up rather than staying at 72rem because 72rem only fills the
+     screen up to about 1280px wide; past that the page kept its 1280px layout
+     and just grew its margins, which is what made the hero look small on a
+     large monitor. The steps are on the container, not on `max-w-*` utilities,
+     so the two breakpoints here are the only place the number lives.
+
+     Capped at 90rem: past that the hero's text column gets wide enough that the
+     headline and the food stop reading as one composition. */
+  --shell: 72rem;
+
+  /* The header row is pinned to this, and the hero subtracts it from the
+     viewport, which is what makes the hero fill exactly the first screen.
+     Locking the row height (rather than letting padding decide it) is what
+     keeps those two in agreement. */
+  --header-h: 4.75rem;
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --shell: 82rem;
+  }
+}
+
+@media (min-width: 1700px) {
+  :root {
+    --shell: 90rem;
+  }
 }
 
 html {
@@ -30,7 +85,21 @@ html {
 
 body {
   background-color: var(--color-cream);
-  color: var(--color-navy);
+  color: var(--color-ink);
+}
+
+/* Paper grain, from 2a: the flat creams read slightly plastic at this size, and
+   a little noise is what makes them read as printed stock instead. It lives here
+   rather than in a Tailwind arbitrary value because the SVG data URI is full of
+   the quotes, parens and commas that class syntax has to escape.
+
+   `multiply` rather than an overlay tint so it darkens the cream it sits on
+   instead of greying it, and 0.07 because anything heavier starts reading as
+   dirt on a screenshot. */
+.paper-grain {
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @media (prefers-reduced-motion: reduce) {

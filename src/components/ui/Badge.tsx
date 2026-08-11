@@ -13,12 +13,12 @@ const badgeConfig: Record<
   { label: string; icon: LucideIcon; className: string }
 > = {
   spicy: { label: "Spicy", icon: Flame, className: "bg-red text-white" },
-  vegetarian: { label: "Vegetarian", icon: Sprout, className: "bg-navy text-white" },
-  new: { label: "New", icon: Sparkles, className: "bg-gold text-navy" },
+  vegetarian: { label: "Vegetarian", icon: Sprout, className: "bg-ink text-white" },
+  new: { label: "New", icon: Sparkles, className: "bg-gold text-ink" },
   "gluten-free": {
     label: "Gluten free",
     icon: WheatOff,
-    className: "border border-navy/40 text-navy",
+    className: "border border-ink/40 text-ink",
   },
 };
 
