@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sazón">
+  <!-- La trama de la franja del header, recortada en cuadrado. Es la parte de
+       la marca que sobrevive a 16px: el rojo #e80203 medido del logo y los
+       lunares crema al tresbolillo. Ni el wordmark ni la ola aguantan ese
+       tamaño — el script se vuelve un borrón y la ola, una raya. -->
+  <rect width="64" height="64" rx="14" fill="#e80203"/>
+  <!-- Dos filas desfasadas medio paso, como en la gráfica. Los puntos de los
+       bordes salen cortados a propósito: es lo que hace que se lea como un
+       recorte de una trama continua y no como cuatro bolitas colocadas. -->
+  <g fill="#fef8ec">
+    <circle cx="16" cy="20" r="8"/>
+    <circle cx="48" cy="20" r="8"/>
+    <circle cx="0" cy="44" r="8"/>
+    <circle cx="32" cy="44" r="8"/>
+    <circle cx="64" cy="44" r="8"/>
+  </g>
+</svg>

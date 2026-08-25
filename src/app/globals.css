@@ -78,7 +78,7 @@
      medida y no parte del alto de la fila porque la fila la fija el wordmark:
      si la franja se descontara de ella, los destellos volverían a recortarse.
      Se suma. */
-  --header-rail: 3.75rem;
+  --header-rail: 4.5rem;
 
   /* El alto total del header. El hero se lo resta al viewport, y por eso tiene
      que incluir la franja: es lo que hace que el hero ocupe exactamente la
