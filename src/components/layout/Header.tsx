@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Wordmark } from "@/components/ui/Wordmark";
+import { PolkaRail } from "@/components/ui/PolkaRail";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
@@ -66,6 +67,12 @@ export function Header() {
     // seam once there was no border to hide it, and the header still has to be
     // readable over the teal band and the photos it scrolls across.
     <header ref={headerRef} className="sticky top-0 z-50 bg-cream-lite">
+      {/* La franja de la marca, antes que el grano a propósito: el
+          `paper-grain` de abajo multiplica sobre ella y le da la misma textura
+          de papel que a la crema, de modo que las dos se leen como la misma
+          pieza impresa y no como un SVG sobre un fondo. */}
+      <PolkaRail className="relative h-(--header-rail) w-full" />
+
       {/* The same grain the hero runs. Colour alone was not enough for the two
           to read as one surface: the hero multiplies this texture over its
           cream and the bare header did not, which left the nav a shade cleaner
@@ -74,11 +81,12 @@ export function Header() {
       <div aria-hidden="true" className="paper-grain pointer-events-none absolute inset-0" />
 
       {/* Fixed height instead of vertical padding: the hero sizes itself to
-          `100svh - var(--header-h)`, so the row has to actually be that tall or
-          the first screen ends up over- or under-shooting by a few pixels. */}
+          `100svh - var(--header-h)`, and `--header-h` is this row plus the rail
+          above it, so the row has to actually be `--header-row` tall or the
+          first screen ends up over- or under-shooting by a few pixels. */}
       <div
         ref={rowRef}
-        className="relative mx-auto flex h-(--header-h) max-w-(--shell) items-center justify-between px-6"
+        className="relative mx-auto flex h-(--header-row) max-w-(--shell) items-center justify-between px-6"
       >
         <a href="#top" className="shrink-0 transition-transform duration-200 ease-out hover:-translate-y-0.5">
           {/* Sin reducir. Estaba a `scale-75` de cuando el wordmark era solo

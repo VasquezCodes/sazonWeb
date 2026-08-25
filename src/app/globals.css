@@ -49,15 +49,24 @@
      headline and the food stop reading as one composition. */
   --shell: 72rem;
 
-  /* The header row is pinned to this, and the hero subtracts it from the
-     viewport, which is what makes the hero fill exactly the first screen.
-     Locking the row height (rather than letting padding decide it) is what
-     keeps those two in agreement.
+  /* The nav row is pinned to this. Locking the row height (rather than letting
+     padding decide it) is what keeps the header and the hero in agreement.
 
      5.5rem is set by the wordmark, not by the nav links: the sparks reach
      about 12px above the script's own box, so a shorter row clipped them
      against the top edge once the logo stopped being scaled down. */
-  --header-h: 5.5rem;
+  --header-row: 5.5rem;
+
+  /* La franja roja de lunares que remata la página por arriba. Es su propia
+     medida y no parte del alto de la fila porque la fila la fija el wordmark:
+     si la franja se descontara de ella, los destellos volverían a recortarse.
+     Se suma. */
+  --header-rail: 3.75rem;
+
+  /* El alto total del header. El hero se lo resta al viewport, y por eso tiene
+     que incluir la franja: es lo que hace que el hero ocupe exactamente la
+     primera pantalla y ni un píxel más. */
+  --header-h: calc(var(--header-row) + var(--header-rail));
 }
 
 @media (min-width: 1440px) {
