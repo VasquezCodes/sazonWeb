@@ -13,7 +13,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   //
   // The tinted drop shadow is what separates the pill from cream without an
   // outline. It is sized for the nav; the hero's larger pill scales it up.
-  primary: "bg-red text-white shadow-[0_6px_16px_rgba(192,61,39,0.28)] hover:bg-red/90",
+  primary: "bg-red text-white shadow-[0_6px_16px_rgba(232,2,3,0.28)] hover:bg-red/90",
   secondary:
     "bg-transparent text-ink border-2 border-ink hover:bg-ink hover:text-white",
 };

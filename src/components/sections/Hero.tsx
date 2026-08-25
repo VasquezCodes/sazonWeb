@@ -200,7 +200,7 @@ export function Hero() {
             <Button
               href="#contact"
               variant="primary"
-              className="min-w-36 px-5 shadow-[0_10px_24px_rgba(192,61,39,0.26)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 sm:px-6"
+              className="min-w-36 px-5 shadow-[0_10px_24px_rgba(232,2,3,0.26)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 sm:px-6"
             >
               Get in touch
             </Button>

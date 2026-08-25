@@ -102,7 +102,7 @@ export function Header() {
             <a
               key={link.href}
               href={link.href}
-              className="group relative py-1 font-heading text-base font-bold uppercase tracking-wide text-ink transition-colors duration-200 hover:text-red focus-visible:outline-none focus-visible:text-red"
+              className="group relative py-1 font-heading text-base font-bold uppercase tracking-wide text-ink transition-colors duration-200 hover:text-red-deep focus-visible:outline-none focus-visible:text-red-deep"
             >
               {link.label}
               <span className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-red transition-transform duration-200 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100" />
@@ -119,7 +119,7 @@ export function Header() {
         <button
           type="button"
           onClick={() => setIsOpen((open) => !open)}
-          className="rounded-full p-1.5 text-ink transition-colors duration-200 hover:bg-ink/5 hover:text-red focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red/50 md:hidden"
+          className="rounded-full p-1.5 text-ink transition-colors duration-200 hover:bg-ink/5 hover:text-red-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red/50 md:hidden"
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
         >
@@ -144,7 +144,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="font-heading text-base font-bold uppercase tracking-wide text-ink transition-colors duration-200 hover:text-red"
+                className="font-heading text-base font-bold uppercase tracking-wide text-ink transition-colors duration-200 hover:text-red-deep"
               >
                 {link.label}
               </a>

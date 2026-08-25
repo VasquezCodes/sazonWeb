@@ -54,7 +54,7 @@ export function WaveDivider({
           walked back right-to-left with its control points swapped. */}
       <path
         d="M0,90 C300,42 600,122 900,82 C1050,62 1150,98 1200,74 L1200,82 C1150,106 1050,70 900,90 C600,130 300,50 0,98 Z"
-        fill="#c03d27"
+        fill="#e80203"
       />
     </svg>
   );

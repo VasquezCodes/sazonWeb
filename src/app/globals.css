@@ -19,8 +19,9 @@
      teal never becomes a button — and `celeste` stays structural (the wave, the
      band under the hero, the disc behind the food).
 
-     Contrast on cream: ink 10.9:1, ink/70 (body) 4.8:1, red 4.1:1 — display
-     type only. On celeste: white 7.3:1. On red: white 5.3:1. */
+     Contrast on cream: ink 10.9:1, ink/70 (body) 4.8:1, red 3.6:1 — display
+     type only. On celeste: white 7.3:1. On red: white 4.7:1 (AA), and
+     `red-deep` on cream-lite 4.8:1, which is what small red text uses. */
   --color-cream-lite: #fef8ec;
   --color-cream-soft: #f8ecd4;
   --color-cream: #f1dfb8;
@@ -28,7 +29,23 @@
   --color-celeste: #125f6c;
   --color-celeste-lite: #1c7e8d;
   --color-gold: #e2a04a;
-  --color-red: #c03d27;
+  /* Rojo de marca, MEDIDO de `public/images/Logo.jpeg`: mediana por canal de
+     los 162.636 píxeles del campo rojo, con los cuartiles en #e40102 y
+     #ec0305 — una distribución tan cerrada que no deja lugar a dudas.
+
+     Sustituye al #c03d27 del estudio 2a, un terracota apagado que no era el
+     rojo que la marca usa en su gráfica. El cambio vino de la franja de
+     lunares del header: al traer el rojo de verdad a la página, el botón
+     terracota a treinta píxeles de la franja encendida parecía un error y no
+     una paleta. */
+  --color-red: #e80203;
+
+  /* El mismo rojo un pelo más oscuro, para TEXTO PEQUEÑO sobre crema. El rojo
+     de marca se queda en 4,47:1 sobre `cream-lite` y AA pide 4,5 para texto
+     normal: falla por un pelo, pero falla. Este llega a 4,75:1 y a simple
+     vista es el mismo color — ocho puntos de rojo. Va sólo en los enlaces del
+     nav; en display grande, iconos y rellenos usa `red`, que ahí sobra. */
+  --color-red-deep: #e00203;
   --font-sans: var(--font-inter);
   --font-heading: var(--font-poppins);
   --font-script: var(--font-kaushan);

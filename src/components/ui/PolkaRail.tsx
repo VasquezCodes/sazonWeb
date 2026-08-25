@@ -26,11 +26,11 @@
 
    ── Cómo está resuelto
 
-   Los puntos y la ola viven en zonas separadas y no se tocan nunca. Arriba, dos
-   filas exactas de lunares al tamaño en que se leen como lunares. Abajo, una
-   banda limpia de rojo donde la ola tiene sitio para moverse de verdad. Así el
-   canto es inmune al problema a cualquier ancho de viewport, en vez de estar
-   afinado para uno solo.
+   Los puntos y la ola viven en zonas separadas y no se tocan nunca. Arriba una
+   fila de lunares al tamaño medido de la marca; abajo, una banda limpia de
+   rojo donde la ola tiene sitio para moverse de verdad. Así el canto es inmune
+   al problema a cualquier ancho de viewport, en vez de estar afinado para uno
+   solo.
 
    Es una licencia respecto al logo — allí la ola sí corta los puntos — y es
    deliberada: a este formato la copia literal se ve peor que la adaptación. */
@@ -51,11 +51,9 @@
    ola quedaba a la mitad de su recorrido y se leía como una banda casi recta.
 
    La ola se mueve entre y=29,5 y y=48 — de 37px a 60px una vez renderizada, 23px
-   de recorrido — y el límite de arriba es el número importante: la segunda fila
-   de lunares acaba a 29,5px, así que la cresta pasa 8px por debajo y no llega a
-   morder ningún punto. Esos 8px son holgura de diseño, no casualidad: con 2px,
-   como quedaban antes, los puntos se apelotonaban contra el canto y la franja
-   salía pesada por arriba.
+   de recorrido — y el límite de arriba es el número importante: la fila de
+   lunares acaba a 27px, así que la cresta pasa 10px por debajo y no llega a
+   morder ningún punto.
 
    El rectángulo arranca en -40 por arriba y por los lados para que el viewBox
    lo recorte en vez de que sus cantos coincidan con el borde de la caja: así
@@ -75,7 +73,7 @@
    anterior y por eso empalman sin picos — con las alturas variadas a mano. Da
    una orilla orgánica y desigual sin coste de filtro y sin depender de cómo
    rasterice cada navegador. Si se retoca, la única regla dura es no subir
-   ninguna altura por encima de 29,5: ahí empieza la segunda fila de lunares. */
+   ninguna altura por encima de 29,5: por ahí anda la fila de lunares. */
 const WAVE_MASK =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 48' preserveAspectRatio='none'%3E" +
   "%3Cpath fill='%23fff' d='M-40,-26 L1240,-26 L1240,47.5 " +
@@ -84,42 +82,53 @@ const WAVE_MASK =
   "S470,36.4 425,31.2 S355,28.8 310,29.8 S225,34.6 170,39.6 " +
   "S70,45.8 -40,47 Z'/%3E%3C/svg%3E";
 
-/* El rojo de `globals.css` (#c03d27) aclarado y oscurecido a mano. Va como
-   degradado y no como plano porque a este tamaño un color plano se lee a
-   plástico — la misma razón por la que el resto de la página lleva
+/* #e80203 es el rojo de la marca MEDIDO, no elegido: es la mediana por canal
+   de los 162.636 píxeles rojos de `public/images/Logo.jpeg`, con los cuartiles
+   en #e40102 y #ec0305 — una distribución tan cerrada que no deja lugar a
+   dudas. Es el mismo valor que `--color-red` en globals.css: traer este rojo a
+   la franja fue justamente lo que obligó a cambiar el token, porque el
+   terracota anterior (#c03d27) puesto a treinta píxeles de la franja encendida
+   parecía un error y no una paleta.
+
+   Va literal y no como `var(--color-red)` porque el degradado necesita además
+   las variantes aclarada y oscurecida, que no son tokens. Si el token cambia,
+   estos tres cambian con él.
+
+   Va como degradado y no como plano porque a este tamaño un color plano se lee
+   a plástico — la misma razón por la que el resto de la página lleva
    `paper-grain` — y unos pocos puntos entre el canto de arriba y el de abajo
-   bastan para que parezca pintura. SVG y `background` no leen los tokens del
-   tema: si cambia #c03d27, hay que cambiar estos tres. */
-const RED = "linear-gradient(180deg, #cb4530 0%, #c03d27 55%, #b23621 100%)";
+   bastan para que parezca pintura. */
+const RED = "linear-gradient(180deg, #f3141a 0%, #e80203 55%, #cc0206 100%)";
 
-/* Las dos filas de lunares, una capa cada una. Que sean dos capas y no una
-   rejilla que se repite hacia abajo es justamente lo que garantiza que la ola
-   no muerda nunca un punto: cada capa tiene una celda tan alta como la franja
-   entera y se repite sólo en X (`repeat-x`), así que aporta exactamente una
-   fila y nada por debajo. Con una rejilla cuadrada normal seguirían saliendo
-   filas hacia abajo hasta llenar el alto, y la de más abajo caería dentro del
-   recorrido de la ola: de ahí venía la hilera de bultos.
+/* El lunar y su paso salen medidos del logo, no estimados. En la gráfica el
+   punto ocupa el 17% del alto del campo rojo y va a 2,86 diámetros del
+   siguiente; sobre una franja de 60px eso da 10px de punto y 29px de paso.
+   Antes estaban a 7px y 16px, que era la mitad de contundente de lo que la
+   marca es en realidad.
 
-   La altura de cada fila va en el `at 50% Npx` del propio gradiente y no en
+   Al tamaño de verdad ya no caben dos filas: 10px de punto a 29px de paso
+   necesitan ~47px sólo para los lunares, y la franja tiene 60px de los que la
+   ola se lleva los últimos 23. Así que va UNA fila, centrada a 22px del canto
+   — 17px de rojo por encima y 10px por debajo antes de que empiece la ola. No
+   está a media franja sino a media franja MEDIA: la ola hace que el alto varíe
+   entre 37 y 60px, y centrar sobre los 60 dejaba el punto visiblemente alto. Dos
+   filas a este tamaño exigen subir `--header-rail` a ~4,75rem.
+
+   La altura de la fila va en el `at 50% Npx` del propio gradiente y no en
    `background-position`, que sería lo intuitivo pero no funciona: ahí el
    porcentaje se mide contra el hueco libre entre caja y celda, y como la celda
    mide justo el alto de la caja ese hueco es cero.
 
-   10px y 26px dejan ~6px de rojo macizo sobre la primera fila y 16px de paso
-   entre filas (~2,3 diámetros, la proporción que tienen en el logo). El paso
-   vertical y el horizontal son el mismo número a propósito: en una rejilla que
-   no es cuadrada los lunares se leen desalineados aunque estén perfectos.
-
-   La segunda fila acaba a 29,5px, que es lo que le deja a la ola los 23px de
-   recorrido que necesita para leerse como ola y no como canto rozado.
+   La capa se repite sólo en X (`repeat-x`), así que aporta exactamente una
+   fila y nada por debajo. Con una rejilla cuadrada saldrían más filas hacia
+   abajo hasta llenar el alto, y la de más abajo caería dentro del recorrido de
+   la ola: cada punto partido por la mitad a la misma altura, que es el aire de
+   tira de sellos perforada del que costó tanto salir.
 
    El lunar es crema y no blanco: sobre este rojo el blanco puro salta un
    escalón por delante de la crema del header y la franja deja de leerse como
-   el mismo papel. Y mide 7px, que es el tamaño en que todavía se lee como
-   lunar — más fino se convierte en trama de semitono y parece una plancha
-   perforada en vez de la marca. */
-const ROW_1 = "radial-gradient(circle at 50% 10px, #fef8ec 3.5px, transparent 4.1px)";
-const ROW_2 = "radial-gradient(circle at 50% 26px, #fef8ec 3.5px, transparent 4.1px)";
+   el mismo papel. */
+const ROW_1 = "radial-gradient(circle at 50% 22px, #fef8ec 5px, transparent 5.7px)";
 
 export function PolkaRail({ className }: { className?: string }) {
   return (
@@ -127,10 +136,10 @@ export function PolkaRail({ className }: { className?: string }) {
       aria-hidden="true"
       className={className}
       style={{
-        backgroundImage: [ROW_1, ROW_2, RED].join(", "),
-        backgroundSize: "16px 100%, 16px 100%, 100% 100%",
-        backgroundPosition: "0 0, 0 0, 0 0",
-        backgroundRepeat: "repeat-x, repeat-x, no-repeat",
+        backgroundImage: [ROW_1, RED].join(", "),
+        backgroundSize: "29px 100%, 100% 100%",
+        backgroundPosition: "0 0, 0 0",
+        backgroundRepeat: "repeat-x, no-repeat",
         maskImage: `url("${WAVE_MASK}")`,
         WebkitMaskImage: `url("${WAVE_MASK}")`,
         maskSize: "100% 100%",
